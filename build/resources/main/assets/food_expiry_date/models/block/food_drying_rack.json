@@ -1,0 +1,9 @@
+{
+  "parent": "food_expiry_date:custom/drying_rack",
+  "textures": {
+    "all": "food_expiry_date:block/drying_rack",
+    "particle": "food_expiry_date:block/drying_rack",
+    "1": "food_expiry_date:block/drying_rack"
+  },
+  "render_type": "solid"
+}

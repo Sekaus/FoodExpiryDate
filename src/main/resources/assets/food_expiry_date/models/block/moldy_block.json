@@ -1,0 +1,8 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "food_expiry_date:block/moldy_block",
+    "particle": "food_expiry_date:block/moldy_block"
+  },
+  "render_type": "cutout_mipped"
+}

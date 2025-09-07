@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "food_expiry_date:item/moldy_milk"
+  }
+}

@@ -1,0 +1,22 @@
+--------------------------------------------------------------------------------
+
+Command-Line:
+ - C:\Program Files\Java\jdk-17\bin\java.exe
+ - -jar
+ - C:\Users\chris\.gradle\caches\neoformruntime\artifacts\net\minecraftforge\installertools\1.3.2\installertools-1.3.2-fatjar.jar
+ - --task
+ - bundler_extract
+ - --input
+ - C:\Users\chris\.gradle\caches\neoformruntime\artifacts\minecraft_1.20.1_server.jar
+ - --output
+ - ./output.jar
+ - --jar-only
+--------------------------------------------------------------------------------
+
+Task: BUNDLER_EXTRACT
+Input:   C:\Users\chris\.gradle\caches\neoformruntime\artifacts\minecraft_1.20.1_server.jar
+Output:  C:\Users\chris\MCreatorWorkspaces\FoodExpiryDate\build\tmp\neoformruntime\20250905-144454_extractServer\.\output.jar
+All:     false
+JarOnly: true
+Libs:    false
+Extracted: versions/1.20.1/server-1.20.1.jar

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:block",
+  "random_sequence": "food_expiry_date:blocks/dead_crops",
+  "pools": [
+    {
+      "rolls": 1.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "food_expiry_date:moldy_food"
+        }
+      ]
+    }
+  ]
+}

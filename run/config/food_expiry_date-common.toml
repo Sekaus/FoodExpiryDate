@@ -1,0 +1,12 @@
+
+[general]
+	#Radius (in blocks) around each player to scan for blocks.
+	#Range: 1 ~ 128
+	scanRadius = 8
+	#Max days before it expires (days that passed - creation date).
+	#Range: 0 ~ 365
+	maxDays = 5
+	#Days before item is considered dried.
+	#Range: 0 ~ 365
+	dryDays = 3
+

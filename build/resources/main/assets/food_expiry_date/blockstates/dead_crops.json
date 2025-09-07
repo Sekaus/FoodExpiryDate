@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "food_expiry_date:block/dead_crops"
+    }
+  }
+}

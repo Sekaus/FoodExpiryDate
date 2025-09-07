@@ -1,0 +1,36 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:mutton"
+    },
+    "title": {
+      "translate": "advancements.crafting_drying_rack.title"
+    },
+    "description": {
+      "translate": "advancements.crafting_drying_rack.descr"
+    },
+    "frame": "goal",
+    "show_toast": false,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "crafting_drying_rack_0": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "food_expiry_date:food_drying_rack"
+            ],
+            "count": {
+              "min": 1,
+              "max": 1
+            }
+          }
+        ]
+      }
+    }
+  },
+  "parent": "food_expiry_date:that_did_not_last_long"
+}
