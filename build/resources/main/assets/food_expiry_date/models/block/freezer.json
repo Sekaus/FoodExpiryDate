@@ -1,9 +1,0 @@
-{
-  "parent": "food_expiry_date:custom/freezer",
-  "textures": {
-    "all": "food_expiry_date:block/freezer",
-    "particle": "food_expiry_date:block/freezer",
-    "0": "food_expiry_date:block/freezer"
-  },
-  "render_type": "solid"
-}

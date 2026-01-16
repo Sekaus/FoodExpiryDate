@@ -1,7 +1,0 @@
-{
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "food_expiry_date:item/food_drying_rack_item"
-  },
-  "render_type": "translucent"
-}
