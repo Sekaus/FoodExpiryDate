@@ -31,10 +31,10 @@ import net.minecraft.core.BlockPos;
 
 import net.mcreator.foodexpirydate.world.inventory.FoodDryingRackGUIMenu;
 import net.mcreator.foodexpirydate.init.FoodExpiryDateModBlockEntities;
-import net.mcreator.foodexpirydate.CustomDisplayUtils;
 import net.mcreator.foodexpirydate.network.ClientSpawnHelper;
 import net.mcreator.foodexpirydate.DisplayRegistry;
 import net.mcreator.foodexpirydate.ThingsThatCanExpire;
+import net.mcreator.foodexpirydate.CustomDisplayUtils;
 
 import javax.annotation.Nullable;
 

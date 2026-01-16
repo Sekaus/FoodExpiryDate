@@ -55,8 +55,11 @@ public class SetFoodExpiryState {
             return;
 
         boolean isFood = ThingsThatCanExpire.isFood(stack);
-        boolean isDried = stack.getOrCreateTag().getBoolean("dried");
-        boolean dateSet = stack.getOrCreateTag().getBoolean("dateSet");
+        
+        CompoundTag tag = stack.getTag();
+
+		boolean isDried = tag != null && tag.getBoolean("dried");
+		boolean dateSet = tag != null && tag.getBoolean("dateSet");
 
         // The expiry logic only applies to food that has not been dried.
         if (!isDried && isFood) {
