@@ -44,9 +44,3 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 apply from: 'mcreator.gradle'
-
-
-dependencies {
-    // Point to your library jar in libs/
-    implementation files('libs/havahlib-0.0.0-forge-1.20.1.jar')
-}
