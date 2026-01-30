@@ -1,0 +1,7 @@
+.gradle/
+build/
+.eclipse/
+.idea/
+.mcreator/
+run/
+*.bat
