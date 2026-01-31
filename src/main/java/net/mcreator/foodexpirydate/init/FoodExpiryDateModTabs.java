@@ -31,6 +31,7 @@ public class FoodExpiryDateModTabs {
 				tabData.accept(FoodExpiryDateModItems.CARROT_SEEDS.get());
 				tabData.accept(FoodExpiryDateModItems.POTATO_SEEDS.get());
 				tabData.accept(FoodExpiryDateModItems.BOTTLE_OF_MOLD.get());
+				tabData.accept(FoodExpiryDateModBlocks.BOTTLE_OF_MOLD_BLOCK.get().asItem());
 			}).build());
 
 	@SubscribeEvent
