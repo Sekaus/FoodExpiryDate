@@ -30,6 +30,7 @@ public class FoodExpiryDateModTabs {
 				tabData.accept(FoodExpiryDateModBlocks.MOLDY_BLOCK.get().asItem());
 				tabData.accept(FoodExpiryDateModItems.CARROT_SEEDS.get());
 				tabData.accept(FoodExpiryDateModItems.POTATO_SEEDS.get());
+				tabData.accept(FoodExpiryDateModItems.BOTTLE_OF_MOLD.get());
 			}).build());
 
 	@SubscribeEvent
@@ -38,6 +39,7 @@ public class FoodExpiryDateModTabs {
 			tabData.accept(FoodExpiryDateModItems.MOLDY_MILK.get());
 			tabData.accept(FoodExpiryDateModItems.MOLDY_FOOD.get());
 			tabData.accept(FoodExpiryDateModBlocks.MOLDY_BLOCK.get().asItem());
+			tabData.accept(FoodExpiryDateModItems.BOTTLE_OF_MOLD.get());
 		} else if (tabData.getTabKey() == CreativeModeTabs.NATURAL_BLOCKS) {
 			tabData.accept(FoodExpiryDateModBlocks.DEAD_CROPS.get().asItem());
 		}

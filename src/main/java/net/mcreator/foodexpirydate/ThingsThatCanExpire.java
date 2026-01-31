@@ -14,9 +14,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.CandleCakeBlock;
-import net.minecraft.world.level.block.entity.BlockEntity;
 
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.PlantType;
@@ -24,8 +22,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Optional;
 import java.util.Map;
-
-import com.google.common.collect.ImmutableMap;
+import java.util.HashMap;
 
 /**
  * This class serves as a central registry for all food items and blocks
@@ -33,23 +30,124 @@ import com.google.common.collect.ImmutableMap;
  * and modded content in a robust and scalable way.
  */
 public class ThingsThatCanExpire {
+	private static final Map<Item, Item> ROTTEN_ITEMS = new HashMap<>();
+	private static final Map<Block, Block> ROTTEN_BLOCKS = new HashMap<>();
 
-    // Immutable Maps for cleaner and more efficient lookups
-    private static final Map<Item, Item> ROTTEN_ITEMS = ImmutableMap.<Item, Item>builder()
-        .put(Items.MILK_BUCKET, FoodExpiryDateModItems.MOLDY_MILK.get())
-        .put(Items.EGG, FoodExpiryDateModItems.MOLDY_FOOD.get())
-        .put(Items.MELON, FoodExpiryDateModItems.MOLDY_BLOCK.get()) // Keep for item logic if needed
-        .put(Items.PUMPKIN, FoodExpiryDateModItems.MOLDY_BLOCK.get()) // Keep for item logic if needed
-        .put(Items.CAKE, FoodExpiryDateModItems.MOLDY_BLOCK.get())
-        .build();
+	public static void loadDefaults() {
+		// Items
+		ROTTEN_ITEMS.put(Items.MILK_BUCKET, FoodExpiryDateModItems.MOLDY_MILK.get());
+        ROTTEN_ITEMS.put(Items.EGG, FoodExpiryDateModItems.MOLDY_FOOD.get());
+        ROTTEN_ITEMS.put(Items.MELON, FoodExpiryDateModItems.MOLDY_BLOCK.get()); // Keep for item logic if needed
+        ROTTEN_ITEMS.put(Items.PUMPKIN, FoodExpiryDateModItems.MOLDY_BLOCK.get()); // Keep for item logic if needed
+        ROTTEN_ITEMS.put(Items.CAKE, FoodExpiryDateModItems.MOLDY_BLOCK.get());
 
-    private static final Map<Block, Block> ROTTEN_BLOCKS = ImmutableMap.<Block, Block>builder()
-        .put(Blocks.MELON, FoodExpiryDateModBlocks.MOLDY_BLOCK.get()) // This maps to your modded moldy block
-        .put(Blocks.PUMPKIN, FoodExpiryDateModBlocks.MOLDY_BLOCK.get()) // This maps to your modded moldy block
-        .put(Blocks.CARVED_PUMPKIN, FoodExpiryDateModBlocks.MOLDY_BLOCK.get()) // add carved variant
-        .put(Blocks.CAKE, FoodExpiryDateModBlocks.MOLDY_BLOCK.get()) // This maps to your modded moldy block
-        .put(Blocks.CANDLE_CAKE, FoodExpiryDateModBlocks.MOLDY_BLOCK.get()) // This maps to your modded moldy block
-        .build();
+        //Blocks
+        ROTTEN_BLOCKS.put(Blocks.MELON, FoodExpiryDateModBlocks.MOLDY_BLOCK.get()); // This maps to your modded moldy block
+        ROTTEN_BLOCKS.put(Blocks.PUMPKIN, FoodExpiryDateModBlocks.MOLDY_BLOCK.get()); // This maps to your modded moldy block
+        ROTTEN_BLOCKS.put(Blocks.CARVED_PUMPKIN, FoodExpiryDateModBlocks.MOLDY_BLOCK.get()); // add carved variant
+        ROTTEN_BLOCKS.put(Blocks.CAKE, FoodExpiryDateModBlocks.MOLDY_BLOCK.get()); // This maps to your modded moldy block
+        ROTTEN_BLOCKS.put(Blocks.CANDLE_CAKE, FoodExpiryDateModBlocks.MOLDY_BLOCK.get()); // This maps to your modded moldy block
+	}
+
+	public static void rebuildRegistry() {
+	    ROTTEN_ITEMS.clear();
+	    ROTTEN_BLOCKS.clear();
+	
+	    loadDefaults();
+	    loadFromConfig();
+	}
+
+	private static void loadFromConfig() {
+	    // Defensive: handle possible null or empty lists
+	    var items = Settings.getExtraItems();
+	    var blocks = Settings.getExtraBlocks();
+	
+	    if (items != null) {
+	        for (String raw : items) {
+	            System.out.println("[FoodExpiryDate] extraItem entry -> " + raw);
+	            parseItem(raw);
+	        }
+	    }
+	    if (blocks != null) {
+	        for (String raw : blocks) {
+	            System.out.println("[FoodExpiryDate] extraBlock entry -> " + raw);
+	            parseBlock(raw);
+	        }
+	    }
+	}
+	
+	private static void parseItem(String line) {
+	    if (line == null) return;
+	    String trimmed = line.trim();
+	    if (trimmed.isEmpty()) return;
+	
+	    // split on first '=' only
+	    int eq = trimmed.indexOf('=');
+	    if (eq <= 0 || eq == trimmed.length() - 1) {
+	        System.out.println("[FoodExpiryDate] Invalid extraItems entry (bad format): '" + line + "'");
+	        return;
+	    }
+	
+	    String left = trimmed.substring(0, eq).trim();
+	    String right = trimmed.substring(eq + 1).trim();
+	
+	    try {
+	        ResourceLocation inRL = new ResourceLocation(left);
+	        ResourceLocation outRL = new ResourceLocation(right);
+	
+	        Item input = ForgeRegistries.ITEMS.getValue(inRL);
+	        Item rotten = ForgeRegistries.ITEMS.getValue(outRL);
+	
+	        if (input == null) {
+	            System.out.println("[FoodExpiryDate] extraItems: unknown input item '" + left + "'");
+	            return;
+	        }
+	        if (rotten == null) {
+	            System.out.println("[FoodExpiryDate] extraItems: unknown rotten item '" + right + "'");
+	            return;
+	        }
+	
+	        ROTTEN_ITEMS.put(input, rotten);
+	    } catch (Exception e) {
+	        System.out.println("[FoodExpiryDate] Exception parsing extraItems entry '" + line + "': " + e.getMessage());
+	    }
+	}
+	
+	private static void parseBlock(String line) {
+	    if (line == null) return;
+	    String trimmed = line.trim();
+	    if (trimmed.isEmpty()) return;
+	
+	    int eq = trimmed.indexOf('=');
+	    if (eq <= 0 || eq == trimmed.length() - 1) {
+	        System.out.println("[FoodExpiryDate] Invalid extraBlocks entry (bad format): '" + line + "'");
+	        return;
+	    }
+	
+	    String left = trimmed.substring(0, eq).trim();
+	    String right = trimmed.substring(eq + 1).trim();
+	
+	    try {
+	        ResourceLocation inRL = new ResourceLocation(left);
+	        ResourceLocation outRL = new ResourceLocation(right);
+	
+	        Block input = ForgeRegistries.BLOCKS.getValue(inRL);
+	        Block rotten = ForgeRegistries.BLOCKS.getValue(outRL);
+	
+	        if (input == null) {
+	            System.out.println("[FoodExpiryDate] extraBlocks: unknown input block '" + left + "'");
+	            return;
+	        }
+	        if (rotten == null) {
+	            System.out.println("[FoodExpiryDate] extraBlocks: unknown rotten block '" + right + "'");
+	            return;
+	        }
+	
+	        ROTTEN_BLOCKS.put(input, rotten);
+	    } catch (Exception e) {
+	        System.out.println("[FoodExpiryDate] Exception parsing extraBlocks entry '" + line + "': " + e.getMessage());
+	    }
+	}
 
     /**
      * Checks if an ItemStack is a food item that can expire.
@@ -58,19 +156,22 @@ public class ThingsThatCanExpire {
      * @return true if the item can expire, false otherwise.
      */
     public static boolean isFood(ItemStack stack) {
-        Item item = stack.getItem();
-        // A direct check against the item's food component.
-        // This is a reliable way to check for most edible items.
-        boolean hasFoodComponent = item.isEdible();
-        // Add specific item checks for items that are not technically food but should expire.
-        boolean isSpecialItem = item == Items.MILK_BUCKET || item == Items.EGG || item == Items.CAKE || item == Items.PUMPKIN || item == Items.MELON || item == Items.DRIED_KELP_BLOCK;
-        // Exclude our own moldy items
-        boolean isMoldy = item == FoodExpiryDateModItems.MOLDY_FOOD.get() ||
-                          item == FoodExpiryDateModItems.MOLDY_MILK.get() ||
-                          item == FoodExpiryDateModItems.MOLDY_BLOCK.get();
-
-        return (hasFoodComponent || isSpecialItem) && !isMoldy;
-    }
+	    Item item = stack.getItem();
+	    
+	    // 1. Check for Moldy Items FIRST to prevent infinite loops
+	    if (item == FoodExpiryDateModItems.MOLDY_FOOD.get() ||
+	        item == FoodExpiryDateModItems.MOLDY_MILK.get() ||
+	        item == FoodExpiryDateModItems.MOLDY_BLOCK.get() ||
+	        item == FoodExpiryDateModItems.BOTTLE_OF_MOLD.get()) {
+	        return false;
+	    }
+	
+	    // 2. Check the ROTTEN_ITEMS map (covers your special items and config)
+	    if (ROTTEN_ITEMS.containsKey(item)) return true;
+	
+	    // 3. Fallback to Minecraft's built-in food component
+	    return item.isEdible();
+	}
 
    /**
      * Checks if a Block is a food block that can expire.

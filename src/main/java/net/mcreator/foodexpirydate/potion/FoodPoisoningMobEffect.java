@@ -1,4 +1,3 @@
-
 package net.mcreator.foodexpirydate.potion;
 
 import net.minecraft.world.entity.ai.attributes.AttributeMap;

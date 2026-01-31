@@ -9,6 +9,8 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import java.util.List;
+
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class Settings {
 
@@ -16,24 +18,29 @@ public class Settings {
     public static final Common COMMON;
     public static final ForgeConfigSpec COMMON_SPEC;
 
-    // Cached runtime value (safe to access after bakeConfig() runs)
+    // Cached runtime values
     private static volatile int radiusOfTheAreaToScanForBlocks = 8;
     private static volatile int daysBeforeItExpires = 5;
     private static volatile int daysBeforeItIsDried = 3;
 
     static {
-        Pair<Common, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(Common::new);
+        Pair<Common, ForgeConfigSpec> specPair =
+                new ForgeConfigSpec.Builder().configure(Common::new);
         COMMON = specPair.getLeft();
         COMMON_SPEC = specPair.getRight();
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, COMMON_SPEC);
     }
 
-    /** Copy values from config holders into runtime fields. Call only after config is loaded. */
+    /** Copy values from config holders into runtime fields. */
     private static void bakeConfig() {
         radiusOfTheAreaToScanForBlocks = COMMON.scanRadius.get();
-        daysBeforeItExpires = COMMON.maxDays.get();     // <- updated to use IntValue.get()
-        daysBeforeItIsDried = COMMON.dryDays.get();    // if you add a dryDays config below
+        daysBeforeItExpires = COMMON.maxDays.get();
+        daysBeforeItIsDried = COMMON.dryDays.get();
     }
+
+    // -----------------------
+    // Runtime getters
+    // -----------------------
 
     public static int getRadiusOfTheAreaToScanForBlocks() {
         return radiusOfTheAreaToScanForBlocks;
@@ -47,24 +54,69 @@ public class Settings {
         return daysBeforeItIsDried;
     }
 
+    public static List<? extends String> getExtraItems() {
+        return COMMON.extraItems.get();
+    }
+
+    public static List<? extends String> getExtraBlocks() {
+        return COMMON.extraBlocks.get();
+    }
+
+    // -----------------------
+    // Config definition
+    // -----------------------
+
     public static class Common {
         public final ForgeConfigSpec.IntValue scanRadius;
         public final ForgeConfigSpec.IntValue maxDays;
         public final ForgeConfigSpec.IntValue dryDays;
 
+        public final ForgeConfigSpec.ConfigValue<List<? extends String>> extraItems;
+        public final ForgeConfigSpec.ConfigValue<List<? extends String>> extraBlocks;
+
         Common(ForgeConfigSpec.Builder builder) {
+
             builder.push("general");
+
             scanRadius = builder
                     .comment("Radius (in blocks) around each player to scan for blocks.")
                     .defineInRange("scanRadius", 8, 1, 128);
-            // Use IntValue + defineInRange for ints (this is the correct Forge pattern).
+
             maxDays = builder
-                    .comment("Max days before it expires (days that passed - creation date).")
+                    .comment("Max days before it expires.")
                     .defineInRange("maxDays", 5, 0, 365);
-            // optional extra config for drying time:
+
             dryDays = builder
                     .comment("Days before item is considered dried.")
                     .defineInRange("dryDays", 3, 0, 365);
+
+            builder.pop();
+
+            builder.push("expiry_overrides");
+
+            extraItems = builder
+                    .comment(
+                        "Extra expirable ITEMS",
+                        "Format: input_item=rotten_item",
+                        "Example: minecraft:apple=food_expiry_date:moldy_food"
+                    )
+                    .defineListAllowEmpty(
+                        List.of("extraItems"),
+                        List.of(),
+                        o -> o instanceof String
+                    );
+
+            extraBlocks = builder
+                    .comment(
+                        "Extra expirable BLOCKS",
+                        "Format: input_block=rotten_block",
+                        "Example: minecraft:hay_block=food_expiry_date:moldy_block"
+                    )
+                    .defineListAllowEmpty(
+                        List.of("extraBlocks"),
+                        List.of(),
+                        o -> o instanceof String
+                    );
 
             builder.pop();
         }
@@ -73,10 +125,12 @@ public class Settings {
     // -----------------------
     // Config load/reload events
     // -----------------------
+
     @SubscribeEvent
     public static void onLoad(final ModConfigEvent.Loading event) {
         if (event.getConfig().getSpec() == COMMON_SPEC) {
             bakeConfig();
+            ThingsThatCanExpire.rebuildRegistry();
         }
     }
 
@@ -84,6 +138,7 @@ public class Settings {
     public static void onReload(final ModConfigEvent.Reloading event) {
         if (event.getConfig().getSpec() == COMMON_SPEC) {
             bakeConfig();
+            ThingsThatCanExpire.rebuildRegistry();
         }
     }
 }

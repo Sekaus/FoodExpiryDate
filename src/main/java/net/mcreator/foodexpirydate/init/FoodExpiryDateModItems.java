@@ -15,6 +15,7 @@ import net.mcreator.foodexpirydate.item.PotatoSeedsItem;
 import net.mcreator.foodexpirydate.item.MoldyMilkItem;
 import net.mcreator.foodexpirydate.item.MoldyFoodItem;
 import net.mcreator.foodexpirydate.item.CarrotSeedsItem;
+import net.mcreator.foodexpirydate.item.BottleOfMoldItem;
 import net.mcreator.foodexpirydate.FoodExpiryDateMod;
 
 public class FoodExpiryDateModItems {
@@ -27,6 +28,7 @@ public class FoodExpiryDateModItems {
 	public static final RegistryObject<Item> MOLDY_BLOCK = block(FoodExpiryDateModBlocks.MOLDY_BLOCK);
 	public static final RegistryObject<Item> CARROT_SEEDS = REGISTRY.register("carrot_seeds", () -> new CarrotSeedsItem());
 	public static final RegistryObject<Item> POTATO_SEEDS = REGISTRY.register("potato_seeds", () -> new PotatoSeedsItem());
+	public static final RegistryObject<Item> BOTTLE_OF_MOLD = REGISTRY.register("bottle_of_mold", () -> new BottleOfMoldItem());
 
 	// Start of user code block custom items
 	// End of user code block custom items

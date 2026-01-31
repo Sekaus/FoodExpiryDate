@@ -1,4 +1,3 @@
-
 package net.mcreator.foodexpirydate.item;
 
 import net.minecraft.world.level.Level;
