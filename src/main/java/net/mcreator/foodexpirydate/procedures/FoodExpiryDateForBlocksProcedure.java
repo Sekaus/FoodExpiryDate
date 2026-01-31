@@ -142,7 +142,6 @@ public class FoodExpiryDateForBlocksProcedure {
 	            drop.setTag(data.copy()); 
 	            
 	            serverLevel.setBlock(pos, moldy, 3);
-	            Block.popResource(serverLevel, pos, drop);
 	            expiryData.removeExpiryData(pos);
 	        }
 	    }
