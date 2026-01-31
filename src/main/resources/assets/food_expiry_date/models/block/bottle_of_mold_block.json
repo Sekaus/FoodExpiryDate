@@ -3,7 +3,7 @@
   "textures": {
     "all": "food_expiry_date:block/glass_of_mold",
     "particle": "food_expiry_date:block/glass_of_mold",
-    "0": "food_expiry_date:block/glass_of_mold"
+    "1": "food_expiry_date:block/glass_of_mold"
   },
   "render_type": "solid"
 }

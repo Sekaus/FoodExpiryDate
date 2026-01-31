@@ -32,6 +32,6 @@ public class BottleOfMoldBlockBlock extends Block {
 
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
-		return box(0, 0, 0, 4, 5, 4);
+		return box(4.8, 0.35, 4.8, 11.2, 11, 11.2);
 	}
 }

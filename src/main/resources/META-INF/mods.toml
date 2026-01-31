@@ -4,7 +4,7 @@ license="MIT License"
 
 [[mods]]
 modId="food_expiry_date"
-version="0.0.3"
+version="0.0.3.1"
 displayName="Food Expiry Date"
 displayURL="https://www.curseforge.com/members/handsondigitsmods/projects"
 credits="Created using mod maker MCreator - https://mcreator.net/about"

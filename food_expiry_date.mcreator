@@ -847,7 +847,7 @@
   "workspaceSettings": {
     "modid": "food_expiry_date",
     "modName": "Food Expiry Date",
-    "version": "0.0.3",
+    "version": "0.0.3.1",
     "description": "This mod adds an expiration date to all food items + some new ways to store food and make it last longer.",
     "author": "Sekaus",
     "websiteURL": "https://www.curseforge.com/members/handsondigitsmods/projects",
