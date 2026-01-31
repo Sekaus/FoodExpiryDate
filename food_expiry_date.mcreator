@@ -769,6 +769,22 @@
           "src/main/resources/data/food_expiry_date/recipes/glass_bottle.json"
         ]
       }
+    },
+    {
+      "name": "BottleOfMoldBlock",
+      "type": "block",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "bottle_of_mold_block",
+      "metadata": {
+        "files": [
+          "src/main/java/net/mcreator/foodexpirydate/block/BottleOfMoldBlockBlock.java",
+          "src/main/resources/assets/food_expiry_date/models/item/bottle_of_mold_block.json",
+          "src/main/resources/assets/food_expiry_date/blockstates/bottle_of_mold_block.json",
+          "src/main/resources/data/food_expiry_date/loot_tables/blocks/bottle_of_mold_block.json",
+          "src/main/resources/assets/food_expiry_date/models/block/bottle_of_mold_block.json"
+        ]
+      }
     }
   ],
   "variable_elements": [
@@ -804,7 +820,8 @@
       "advancements.that_did_not_last_long.title": "That Did Not Last Long",
       "item.food_expiry_date.carrot_seeds": "Carrot Seeds",
       "item.food_expiry_date.potato_seeds": "Potato Seeds",
-      "item.food_expiry_date.bottle_of_mold": "Bottle of Mold"
+      "item.food_expiry_date.bottle_of_mold": "Bottle of Mold",
+      "block.food_expiry_date.bottle_of_mold_block": "Bottle Of Mold Block"
     }
   },
   "metadata": {
