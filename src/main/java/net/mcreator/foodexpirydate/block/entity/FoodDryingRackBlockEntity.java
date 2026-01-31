@@ -224,7 +224,7 @@ public class FoodDryingRackBlockEntity extends RandomizableContainerBlockEntity 
 
 	@Override
 	public boolean canPlaceItem(int index, ItemStack stack) {
-		return ThingsThatCanExpire.isFood(stack);
+		return stack.isEdible();
 	}
 
 	@Override
