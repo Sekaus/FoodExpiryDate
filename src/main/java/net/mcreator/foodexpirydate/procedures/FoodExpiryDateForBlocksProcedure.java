@@ -64,6 +64,8 @@ public class FoodExpiryDateForBlocksProcedure {
                         BlockState state = serverLevel.getBlockState(pos);
                         if (state == null) continue;
 
+                        if (state.isAir() || !ThingsThatCanExpire.isBlockFood(serverLevel, state, pos)) continue; 
+
                         Block block = state.getBlock();
 
                         // --- Fully grown crops ---
