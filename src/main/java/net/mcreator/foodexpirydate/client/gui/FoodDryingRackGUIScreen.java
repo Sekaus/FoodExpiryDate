@@ -9,16 +9,15 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.GuiGraphics;
 
 import net.mcreator.foodexpirydate.world.inventory.FoodDryingRackGUIMenu;
-
-import java.util.HashMap;
+import net.mcreator.foodexpirydate.init.FoodExpiryDateModScreens;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
-public class FoodDryingRackGUIScreen extends AbstractContainerScreen<FoodDryingRackGUIMenu> {
-	private final static HashMap<String, Object> guistate = FoodDryingRackGUIMenu.guistate;
+public class FoodDryingRackGUIScreen extends AbstractContainerScreen<FoodDryingRackGUIMenu> implements FoodExpiryDateModScreens.ScreenAccessor {
 	private final Level world;
 	private final int x, y, z;
 	private final Player entity;
+	private boolean menuStateUpdateActive = false;
 
 	public FoodDryingRackGUIScreen(FoodDryingRackGUIMenu container, Inventory inventory, Component text) {
 		super(container, inventory, text);
@@ -31,7 +30,13 @@ public class FoodDryingRackGUIScreen extends AbstractContainerScreen<FoodDryingR
 		this.imageHeight = 166;
 	}
 
-	private static final ResourceLocation texture = new ResourceLocation("food_expiry_date:textures/screens/food_drying_rack_gui.png");
+	@Override
+	public void updateMenuState(int elementType, String name, Object elementState) {
+		menuStateUpdateActive = true;
+		menuStateUpdateActive = false;
+	}
+
+	private static final ResourceLocation texture = ResourceLocation.parse("food_expiry_date:textures/screens/food_drying_rack_gui.png");
 
 	@Override
 	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
@@ -41,7 +46,7 @@ public class FoodDryingRackGUIScreen extends AbstractContainerScreen<FoodDryingR
 	}
 
 	@Override
-	protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int gx, int gy) {
+	protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
 		RenderSystem.setShaderColor(1, 1, 1, 1);
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
