@@ -744,6 +744,31 @@
           "src/main/java/net/mcreator/foodexpirydate/procedures/UndergrowthCropsDropOverrideProcedure.java"
         ]
       }
+    },
+    {
+      "name": "BottleOfMold",
+      "type": "item",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "bottle_of_mold",
+      "metadata": {
+        "files": [
+          "src/main/java/net/mcreator/foodexpirydate/item/BottleOfMoldItem.java",
+          "src/main/resources/assets/food_expiry_date/models/item/bottle_of_mold.json"
+        ]
+      }
+    },
+    {
+      "name": "GlassBottle",
+      "type": "recipe",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "glass_bottle",
+      "metadata": {
+        "files": [
+          "src/main/resources/data/food_expiry_date/recipes/glass_bottle.json"
+        ]
+      }
     }
   ],
   "variable_elements": [
@@ -778,7 +803,8 @@
       "advancements.that_did_not_last_long.descr": "Wait, what?!",
       "advancements.that_did_not_last_long.title": "That Did Not Last Long",
       "item.food_expiry_date.carrot_seeds": "Carrot Seeds",
-      "item.food_expiry_date.potato_seeds": "Potato Seeds"
+      "item.food_expiry_date.potato_seeds": "Potato Seeds",
+      "item.food_expiry_date.bottle_of_mold": "Bottle of Mold"
     }
   },
   "metadata": {
@@ -804,10 +830,10 @@
   "workspaceSettings": {
     "modid": "food_expiry_date",
     "modName": "Food Expiry Date",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "This mod adds an expiration date to all food items + some new ways to store food and make it last longer.",
     "author": "Sekaus",
-    "websiteURL": "https://mcreator.net",
+    "websiteURL": "https://www.curseforge.com/members/handsondigitsmods/projects",
     "license": "MIT License",
     "serverSideOnly": false,
     "requiredMods": [],
