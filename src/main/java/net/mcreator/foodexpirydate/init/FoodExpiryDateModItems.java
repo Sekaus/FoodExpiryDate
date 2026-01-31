@@ -29,6 +29,7 @@ public class FoodExpiryDateModItems {
 	public static final RegistryObject<Item> CARROT_SEEDS = REGISTRY.register("carrot_seeds", () -> new CarrotSeedsItem());
 	public static final RegistryObject<Item> POTATO_SEEDS = REGISTRY.register("potato_seeds", () -> new PotatoSeedsItem());
 	public static final RegistryObject<Item> BOTTLE_OF_MOLD = REGISTRY.register("bottle_of_mold", () -> new BottleOfMoldItem());
+	public static final RegistryObject<Item> BOTTLE_OF_MOLD_BLOCK = block(FoodExpiryDateModBlocks.BOTTLE_OF_MOLD_BLOCK);
 
 	// Start of user code block custom items
 	// End of user code block custom items
