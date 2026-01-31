@@ -4,9 +4,9 @@ license="MIT License"
 
 [[mods]]
 modId="food_expiry_date"
-version="0.0.2"
+version="0.0.3"
 displayName="Food Expiry Date"
-displayURL="https://mcreator.net"
+displayURL="https://www.curseforge.com/members/handsondigitsmods/projects"
 credits="Created using mod maker MCreator - https://mcreator.net/about"
 authors="Sekaus"
 description="This mod adds an expiration date to all food items + some new ways to store food and make it last longer."
