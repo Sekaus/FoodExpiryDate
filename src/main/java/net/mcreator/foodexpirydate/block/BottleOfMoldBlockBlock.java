@@ -12,7 +12,7 @@ import net.minecraft.core.BlockPos;
 
 public class BottleOfMoldBlockBlock extends Block {
 	public BottleOfMoldBlockBlock() {
-		super(BlockBehaviour.Properties.of().sound(SoundType.METAL).strength(0f, 10f).noOcclusion().isRedstoneConductor((bs, br, bp) -> false));
+		super(BlockBehaviour.Properties.of().sound(SoundType.GLASS).strength(0f, 10f).noOcclusion().isRedstoneConductor((bs, br, bp) -> false));
 	}
 
 	@Override

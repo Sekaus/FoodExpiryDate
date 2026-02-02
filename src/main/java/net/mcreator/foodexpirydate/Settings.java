@@ -72,10 +72,12 @@ public class Settings {
         public final ForgeConfigSpec.IntValue dryDays;
 
         public final ForgeConfigSpec.ConfigValue<List<? extends String>> extraItems;
+        public final ForgeConfigSpec.ConfigValue<List<? extends String>> extraItemsToDry;
+        public final ForgeConfigSpec.ConfigValue<List<? extends String>> avoidItemsToDry;
         public final ForgeConfigSpec.ConfigValue<List<? extends String>> extraBlocks;
 
         Common(ForgeConfigSpec.Builder builder) {
-
+        	
             builder.push("general");
 
             scanRadius = builder
@@ -114,6 +116,28 @@ public class Settings {
                     )
                     .defineListAllowEmpty(
                         List.of("extraBlocks"),
+                        List.of(),
+                        o -> o instanceof String
+                    );
+          	extraItemsToDry = builder
+                    .comment(
+                        "Extra extra ITEMS that can dry",
+                        "Format: input_item",
+                        "Example: minecraft:apple"
+                    )
+                    .defineListAllowEmpty(
+                        List.of("extraItemsToDry"),
+                        List.of(),
+                        o -> o instanceof String
+                    );
+            avoidItemsToDry = builder
+                    .comment(
+                        "Black list ITEMS form the drying rack",
+                        "Format: input_item",
+                        "Example: minecraft:applek"
+                    )
+                    .defineListAllowEmpty(
+                        List.of("avoidItemsToDry"),
                         List.of(),
                         o -> o instanceof String
                     );

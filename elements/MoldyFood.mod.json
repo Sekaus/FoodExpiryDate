@@ -5,6 +5,7 @@
     "renderType": 0,
     "texture": "moldy_food",
     "customModelName": "Normal",
+    "guiTexture": "",
     "customProperties": {},
     "states": [],
     "name": "Moldy Food",

@@ -20,6 +20,8 @@ import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -39,13 +41,25 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 
 import net.mcreator.foodexpirydate.world.inventory.FoodDryingRackGUIMenu;
-import net.mcreator.foodexpirydate.procedures.FoodDryingRackProcedureProcedure;
 import net.mcreator.foodexpirydate.block.entity.FoodDryingRackBlockEntity;
+import net.mcreator.foodexpirydate.init.FoodExpiryDateModBlockEntities;
 
 import io.netty.buffer.Unpooled;
 
 public class FoodDryingRackBlock extends Block implements EntityBlock {
 	public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
+
+	@Override
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+	    if (level.isClientSide()) {
+	        return null;
+	    }
+	    
+	    // Check if the block entity type matches our drying rack
+	    return type == net.mcreator.foodexpirydate.init.FoodExpiryDateModBlockEntities.FOOD_DRYING_RACK.get() 
+	            ? (Level _level, BlockPos _pos, BlockState _state, T _be) -> FoodDryingRackBlockEntity.serverTick(_level, _pos, _state, (FoodDryingRackBlockEntity) _be) 
+	            : null;
+	}
 
 	public FoodDryingRackBlock() {
 		super(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASEDRUM).mapColor(MapColor.WOOD).sound(SoundType.WOOD).strength(1f, 10f).noOcclusion().randomTicks().isRedstoneConductor((bs, br, bp) -> false));
@@ -84,15 +98,6 @@ public class FoodDryingRackBlock extends Block implements EntityBlock {
 
 	public BlockState mirror(BlockState state, Mirror mirrorIn) {
 		return state.rotate(mirrorIn.getRotation(state.getValue(FACING)));
-	}
-
-	@Override
-	public void tick(BlockState blockstate, ServerLevel world, BlockPos pos, RandomSource random) {
-		super.tick(blockstate, world, pos, random);
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
-		FoodDryingRackProcedureProcedure.execute(world, x, y, z);
 	}
 
 	@Override

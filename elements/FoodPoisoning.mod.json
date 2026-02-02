@@ -3,10 +3,13 @@
   "_type": "potioneffect",
   "definition": {
     "effectName": "Food poisoning",
-    "icon": "foodpoisoning.png",
+    "icon": "food_poisoning",
     "color": {
       "value": -6711040,
       "falpha": 0.0
+    },
+    "onAddedSound": {
+      "value": ""
     },
     "isInstant": false,
     "mobEffectCategory": "HARMFUL",

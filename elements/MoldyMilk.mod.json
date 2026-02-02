@@ -5,6 +5,7 @@
     "renderType": 0,
     "texture": "moldy_milk",
     "customModelName": "Normal",
+    "guiTexture": "",
     "customProperties": {},
     "states": [],
     "name": "Moldy Milk",
@@ -43,7 +44,7 @@
       "name": "MoldyMilkRightclicked"
     },
     "onFinishUsingItem": {
-      "name": "FoodPoisoningProcedure"
+      "name": "MoldyFoodPlayerFinishesUsingItem"
     },
     "enableRanged": false,
     "shootConstantly": false,

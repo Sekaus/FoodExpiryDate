@@ -12,6 +12,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.entity.Entity;
@@ -32,9 +33,12 @@ import net.minecraft.core.BlockPos;
 import net.mcreator.foodexpirydate.world.inventory.FoodDryingRackGUIMenu;
 import net.mcreator.foodexpirydate.init.FoodExpiryDateModBlockEntities;
 import net.mcreator.foodexpirydate.network.ClientSpawnHelper;
+import net.mcreator.foodexpirydate.network.FoodExpiryDateModVariables;
 import net.mcreator.foodexpirydate.DisplayRegistry;
 import net.mcreator.foodexpirydate.ThingsThatCanExpire;
 import net.mcreator.foodexpirydate.CustomDisplayUtils;
+import net.mcreator.foodexpirydate.Settings;
+import net.mcreator.foodexpirydate.ThingsThatCanExpire;
 
 import javax.annotation.Nullable;
 
@@ -45,6 +49,70 @@ import io.netty.buffer.Unpooled;
 public class FoodDryingRackBlockEntity extends RandomizableContainerBlockEntity implements WorldlyContainer {
 	private NonNullList<ItemStack> stacks = NonNullList.<ItemStack>withSize(9, ItemStack.EMPTY);
 	private final LazyOptional<? extends IItemHandler>[] handlers = SidedInvWrapper.create(this, Direction.values());
+
+	public static void serverTick(Level level, BlockPos pos, BlockState state, FoodDryingRackBlockEntity blockEntity) {
+	    boolean changed = false;
+	   	double currentDays = FoodExpiryDateModVariables.MapVariables.get(level).daysPassed;
+	
+	    for (int i = 0; i < blockEntity.getContainerSize(); i++) {
+	        ItemStack stack = blockEntity.getItem(i);
+	        
+	        if (!stack.isEmpty() && ThingsThatCanExpire.isFood(stack)) {
+	            CompoundTag tag = stack.getOrCreateTag();
+
+	            // CHECK: If it's already dried, skip to the next slot
+	            if (tag.getBoolean("dried")) continue; 
+	            
+	            // 1. Initialize creationDate if the item doesn't have one
+	            if (!tag.contains("creationDate")) {
+	                tag.putDouble("creationDate", currentDays);
+	                changed = true;
+	            }
+
+	            // Initialize or Increment timeOnRack
+	            // We use a small increment because serverTick runs 20 times a second (1 tick = 1/24000 of a day)
+	            double currentProgress = tag.getDouble("setDate");
+
+				if(!tag.contains("setDate")) {
+	            	tag.putDouble("setDate", currentDays);
+	            	changed = true;
+				}
+	
+	            // 2. Calculate elapsed days
+	            double elapsedDays = currentDays - stack.getOrCreateTag().getDouble("setDate");
+	
+	            // 3. Check if it should turn into a dried item
+	            if (elapsedDays >= Settings.getDaysBeforeItIsDried()) {
+	                tag.putBoolean("dried", true);
+	                tag.remove("setDate");
+	                stack.setTag(tag.copy()); 
+	                blockEntity.setItem(i, stack);
+	                changed = true;
+	            }
+	        }
+	    }
+	
+	    if (changed) {
+	        blockEntity.setChanged();
+	        level.sendBlockUpdated(pos, state, state, 3);
+	    }
+	}
+
+	@Override
+	public ItemStack removeItem(int index, int count) {
+	    // Use getItems() to access the internal list of the BlockEntity
+	    ItemStack stack = ContainerHelper.removeItem(this.getItems(), index, count);
+	    
+	    if (!stack.isEmpty()) {
+	        // This is the logic that resets the progress when you take the item out
+	        CompoundTag tag = stack.getTag();
+	        if (tag != null && tag.contains("setDate")) {
+	            tag.remove("setDate");
+	        }
+	        this.setChanged();
+	    }
+	    return stack;
+	}
 
 	public final Entity[] displayedItems;
 
@@ -224,7 +292,11 @@ public class FoodDryingRackBlockEntity extends RandomizableContainerBlockEntity 
 
 	@Override
 	public boolean canPlaceItem(int index, ItemStack stack) {
-		return stack.isEdible();
+	    String id = stack.getItem().builtInRegistryHolder().key().location().toString();
+	
+	    if (Settings.COMMON.avoidItemsToDry.get().contains(id)) return false;
+	
+	    return stack.isEdible() || Settings.COMMON.extraItemsToDry.get().contains(id);
 	}
 
 	@Override

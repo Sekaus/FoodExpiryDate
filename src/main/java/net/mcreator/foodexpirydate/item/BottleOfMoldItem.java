@@ -13,7 +13,7 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.InteractionHand;
 
 import net.mcreator.foodexpirydate.procedures.MoldyMilkRightclickedProcedure;
-import net.mcreator.foodexpirydate.procedures.FoodPoisoningProcedureProcedure;
+import net.mcreator.foodexpirydate.procedures.MoldyFoodPlayerFinishesUsingItemProcedure;
 
 public class BottleOfMoldItem extends Item {
 	public BottleOfMoldItem() {
@@ -39,7 +39,7 @@ public class BottleOfMoldItem extends Item {
 		double x = entity.getX();
 		double y = entity.getY();
 		double z = entity.getZ();
-		FoodPoisoningProcedureProcedure.execute(world, x, y, z, entity);
+		MoldyFoodPlayerFinishesUsingItemProcedure.execute(world, x, y, z, entity);
 		if (itemstack.isEmpty()) {
 			return retval;
 		} else {
